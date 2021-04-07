@@ -2,6 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:wow_holy_shit/services/auth.dart';
 
 class SignIn extends StatefulWidget {
+
+  final Function toggleView;
+  SignIn({ this.toggleView });
+
   @override
   _SignInState createState() => _SignInState();
 }
@@ -9,10 +13,13 @@ class SignIn extends StatefulWidget {
 class _SignInState extends State<SignIn> {
 
   final AuthService _auth = AuthService();
+  final _formKey = GlobalKey<FormState>();
+
 
   // text field state
-  String email = '';
+  String username = '';
   String password = '';
+  String error = '';
 
   @override
   Widget build(BuildContext context) {
@@ -22,20 +29,32 @@ class _SignInState extends State<SignIn> {
         backgroundColor: Colors.brown[400],
         elevation: 0.0,
         title: Text('Sign in to Brew Crew'),
+        actions: <Widget>[
+          FlatButton.icon(
+            icon: Icon(Icons.person),
+            label: Text('Register'),
+            onPressed: () {
+              widget.toggleView();
+            }
+          )
+        ],
       ),
       body: Container(
         padding: EdgeInsets.symmetric(vertical: 20.0, horizontal: 50.0),
         child: Form(
+          key: _formKey,
           child: Column(
             children: <Widget>[
               SizedBox(height: 20.0),
               TextFormField(
+                validator: (val) => val.isEmpty ? 'Enter an email' : null,
                 onChanged: (val) {
-                  setState(() => email = val);
+                  setState(() => username = val);
                 }
               ),
               SizedBox(height: 20.0),
               TextFormField(
+                validator: (val) => val.length < 6 ? 'Enter a password 6+ chars long' : null,
                 obscureText: true,
                 onChanged: (val) {
                   setState(() => password = val);
@@ -49,9 +68,18 @@ class _SignInState extends State<SignIn> {
                   style: TextStyle(color: Colors.white),
                 ),
                 onPressed: () async {
-                  print(email);
-                  print(password);
+                  if (_formKey.currentState.validate()) {
+                    dynamic result = await _auth.signInWithUsernameAndPassword(username, password);
+                    if (result == null) {
+                      setState(() => error = 'incorrect username and/or password');
+                    }
+                  }
                 }
+              ),
+              SizedBox(height: 12.0),
+              Text(
+                error,
+                style: TextStyle(color: Colors.red, fontSize: 14.0),
               ),
             ]
           ),
