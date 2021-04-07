@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "1081861547741",
+    "project_id": "brew-thing",
+    "storage_bucket": "brew-thing.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1081861547741:android:6ff5cfd0e095cfff309d34",
+        "android_client_info": {
+          "package_name": "com.love.wow_holy_shit"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1081861547741-82l1itjqcaralntc9baqbivta9bsvf0n.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA-2BDTMX2Y_kwX18RtXem4T0J4wOkas3U"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1081861547741-82l1itjqcaralntc9baqbivta9bsvf0n.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
