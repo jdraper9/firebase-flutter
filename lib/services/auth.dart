@@ -23,7 +23,7 @@ class AuthService {
       AuthResult result = await _auth.signInAnonymously();
       FirebaseUser user = result.user;
       return _userFromFirebaseUser(user);
-    } catch (e) {
+    } catch(e) {
       print(e.toString());
       return null;
     }
@@ -33,5 +33,13 @@ class AuthService {
   // register with email & password
 
   // sign out
+  Future signOut() async {
+    try {
+      return await _auth.signOut();
+    } catch(e) {
+      print(e.toString());
+      return null;
+    }
+  }
 
 }

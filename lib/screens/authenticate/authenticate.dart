@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:wow_holy_shit/screens/authenticate/sing_in.dart';
+import 'package:wow_holy_shit/screens/authenticate/register.dart';
 
 class Authenticate extends StatefulWidget {
   @override
@@ -10,7 +10,7 @@ class _AuthenticateState extends State<Authenticate> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      child: SignIn(),
+      child: Register(),
     );
   }
 }
