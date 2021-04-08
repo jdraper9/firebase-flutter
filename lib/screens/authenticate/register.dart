@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:wow_holy_shit/services/auth.dart';
+import 'package:wow_holy_shit/shared/constants.dart';
+import 'package:wow_holy_shit/shared/loading.dart';
 
 class Register extends StatefulWidget {
 
@@ -20,11 +22,12 @@ class _RegisterState extends State<Register> {
   String username = '';
   String password = '';
   String error = '';
+  bool loading = false;
 
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return loading ? Loading() : Scaffold(
       backgroundColor: Colors.brown[100],
       appBar: AppBar(
         backgroundColor: Colors.brown[400],
@@ -48,13 +51,15 @@ class _RegisterState extends State<Register> {
             children: <Widget>[
               SizedBox(height: 20.0),
               TextFormField(
-                validator: (val) => val.isEmpty ? 'Enter an email' : null,
+                decoration: textInputDecoration.copyWith(hintText: 'Username'),
+                validator: (val) => val.isEmpty ? 'Enter a username' : null,
                 onChanged: (val) {
                   setState(() => username = val);
                 }
               ),
               SizedBox(height: 20.0),
               TextFormField(
+                decoration: textInputDecoration.copyWith(hintText: 'Password'),
                 obscureText: true,
                 validator: (val) => val.length < 6 ? 'Enter a password 6+ chars long' : null,
                 onChanged: (val) {
@@ -70,9 +75,13 @@ class _RegisterState extends State<Register> {
                 ),
                 onPressed: () async {
                   if (_formKey.currentState.validate()) {
+                    setState(() => loading = true);
                     dynamic result = await _auth.registerWithUsernameAndPassword(username, password);
                     if (result == null) {
-                      setState(() => error = 'username already exists');
+                      setState(() {
+                        error = 'username already exists';
+                        loading = false;
+                      });
                     }
                   }
                 }

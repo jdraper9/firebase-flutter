@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:wow_holy_shit/services/auth.dart';
+import 'package:wow_holy_shit/shared/constants.dart';
+import 'package:wow_holy_shit/shared/loading.dart';
 
 class SignIn extends StatefulWidget {
 
@@ -14,7 +16,7 @@ class _SignInState extends State<SignIn> {
 
   final AuthService _auth = AuthService();
   final _formKey = GlobalKey<FormState>();
-
+  bool loading = false;
 
   // text field state
   String username = '';
@@ -23,7 +25,7 @@ class _SignInState extends State<SignIn> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return loading ? Loading() : Scaffold(
       backgroundColor: Colors.brown[100],
       appBar: AppBar(
         backgroundColor: Colors.brown[400],
@@ -47,13 +49,15 @@ class _SignInState extends State<SignIn> {
             children: <Widget>[
               SizedBox(height: 20.0),
               TextFormField(
-                validator: (val) => val.isEmpty ? 'Enter an email' : null,
+                decoration: textInputDecoration.copyWith(hintText: 'Username'),
+                validator: (val) => val.isEmpty ? 'Enter a username' : null,
                 onChanged: (val) {
                   setState(() => username = val);
                 }
               ),
               SizedBox(height: 20.0),
               TextFormField(
+                decoration: textInputDecoration.copyWith(hintText: 'Password'),
                 validator: (val) => val.length < 6 ? 'Enter a password 6+ chars long' : null,
                 obscureText: true,
                 onChanged: (val) {
@@ -69,9 +73,13 @@ class _SignInState extends State<SignIn> {
                 ),
                 onPressed: () async {
                   if (_formKey.currentState.validate()) {
+                    setState(() => loading = true);
                     dynamic result = await _auth.signInWithUsernameAndPassword(username, password);
                     if (result == null) {
-                      setState(() => error = 'incorrect username and/or password');
+                      setState(() {
+                        error = 'invalid username / password combination';
+                        loading = false;
+                      });
                     }
                   }
                 }
